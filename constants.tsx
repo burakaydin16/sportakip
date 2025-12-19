@@ -27,6 +27,11 @@ export const STATUS_CONFIG: Record<SessionStatus, { label: string; color: string
     label: 'Hoca Gelmedi',
     color: 'bg-purple-100 text-purple-700 border-purple-200',
     icon: <i className="fa-solid fa-user-slash"></i>
+  },
+  [SessionStatus.CANCELLED]: {
+    label: 'İptal Edildi',
+    color: 'bg-slate-100 text-slate-700 border-slate-200',
+    icon: <i className="fa-solid fa-ban"></i>
   }
 };
 

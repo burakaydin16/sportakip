@@ -24,98 +24,106 @@ const SessionCard: React.FC<SessionCardProps> = ({ session, onUpdateStatus, onRe
   };
 
   return (
-    <div className={`bg-white rounded-2xl shadow-sm border border-slate-200 p-5 transition-all ${session.status === SessionStatus.PLANNED ? 'border-l-4 border-l-blue-500' : ''}`}>
+    <div className={`bg-white rounded-3xl shadow-sm border border-slate-200 p-6 transition-all hover:shadow-md ${session.status === SessionStatus.PLANNED ? 'border-l-4 border-l-blue-500' : ''}`}>
       {!isRescheduling ? (
         <>
-          <div className="flex justify-between items-start mb-4">
-            <div>
-              <h3 className="text-lg font-bold text-slate-800">{session.time}</h3>
-              <p className="text-sm text-slate-500">
-                {new Date(session.date).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', weekday: 'long' })}
-              </p>
+          <div className="flex justify-between items-start mb-6">
+            <div className="flex items-center gap-4">
+              <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-lg ${config.color.split(' ')[0]}`}>
+                {config.icon}
+              </div>
+              <div>
+                <h3 className="text-xl font-black text-slate-800 tracking-tight">{session.time}</h3>
+                <p className="text-xs text-slate-400 font-bold uppercase tracking-wide">
+                  {new Date(session.date).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', weekday: 'long' })}
+                </p>
+              </div>
             </div>
-            <span className={`px-3 py-1 rounded-full text-[10px] uppercase font-bold border ${config.color}`}>
+            <span className={`px-3 py-1.5 rounded-xl text-[10px] uppercase font-black border tracking-wider shadow-sm ${config.color}`}>
               {config.label}
             </span>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 mt-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             <button 
               onClick={() => onUpdateStatus(session.id, SessionStatus.ATTENDED)}
-              className="text-xs py-2 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 rounded-lg transition-colors font-medium border border-emerald-100"
+              className="text-[11px] py-2.5 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 rounded-xl transition-all font-bold border border-emerald-100 flex items-center justify-center gap-2"
             >
-              <i className="fa-solid fa-check mr-1"></i> Gittim
+              <i className="fa-solid fa-check"></i> Katıldım
             </button>
             <button 
               onClick={() => onUpdateStatus(session.id, SessionStatus.MISSED)}
-              className="text-xs py-2 bg-rose-50 text-rose-700 hover:bg-rose-100 rounded-lg transition-colors font-medium border border-rose-100"
+              className="text-[11px] py-2.5 bg-rose-50 text-rose-700 hover:bg-rose-100 rounded-xl transition-all font-bold border border-rose-100 flex items-center justify-center gap-2"
             >
-              <i className="fa-solid fa-xmark mr-1"></i> Gitmedim
+              <i className="fa-solid fa-xmark"></i> Gidemedim
             </button>
             <button 
-              onClick={() => {
-                onUpdateStatus(session.id, SessionStatus.POSTPONED_BY_TEACHER);
-                setIsRescheduling(true);
-              }}
-              className="text-xs py-2 bg-amber-50 text-amber-700 hover:bg-amber-100 rounded-lg transition-colors font-medium border border-amber-100"
+              onClick={() => setIsRescheduling(true)}
+              className="text-[11px] py-2.5 bg-amber-50 text-amber-700 hover:bg-amber-100 rounded-xl transition-all font-bold border border-amber-100 flex items-center justify-center gap-2"
             >
-              <i className="fa-solid fa-clock mr-1"></i> Erteledi / Kaydır
+              <i className="fa-solid fa-clock-rotate-left"></i> Ertele/Kaydır
             </button>
             <button 
               onClick={() => onUpdateStatus(session.id, SessionStatus.TEACHER_ABSENT)}
-              className="text-xs py-2 bg-purple-50 text-purple-700 hover:bg-purple-100 rounded-lg transition-colors font-medium border border-purple-100"
+              className="text-[11px] py-2.5 bg-purple-50 text-purple-700 hover:bg-purple-100 rounded-xl transition-all font-bold border border-purple-100 flex items-center justify-center gap-2"
             >
-              <i className="fa-solid fa-user-slash mr-1"></i> Hoca Gelmedi
+              <i className="fa-solid fa-user-slash"></i> Hoca Gelmedi
             </button>
-          </div>
-
-          <div className="mt-4 pt-4 border-t border-slate-100 flex justify-between items-center">
             <button 
-              onClick={() => setIsRescheduling(true)}
-              className="text-[11px] text-blue-600 font-semibold hover:underline"
+              onClick={() => onUpdateStatus(session.id, SessionStatus.CANCELLED)}
+              className="text-[11px] py-2.5 bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-xl transition-all font-bold border border-slate-200 flex items-center justify-center gap-2"
             >
-              <i className="fa-solid fa-calendar-day mr-1"></i> Tarihi Değiştir
+              <i className="fa-solid fa-ban"></i> Genel İptal
             </button>
             <button 
               onClick={() => onDelete(session.id)}
-              className="text-xs text-slate-400 hover:text-rose-500 transition-colors"
+              className="text-[11px] py-2.5 bg-white text-slate-400 hover:text-rose-600 rounded-xl transition-all font-bold border border-slate-100 flex items-center justify-center gap-2"
             >
-              <i className="fa-solid fa-trash-alt"></i>
+              <i className="fa-solid fa-trash-can"></i> Sil
             </button>
           </div>
         </>
       ) : (
         <form onSubmit={handleRescheduleSubmit} className="space-y-4">
-          <h4 className="text-sm font-bold text-slate-700 mb-2">Dersi Kaydır</h4>
-          <div className="space-y-3">
-            <input 
-              type="date" 
-              value={newDate}
-              onChange={(e) => setNewDate(e.target.value)}
-              className="w-full px-3 py-2 text-sm rounded-lg border border-slate-200"
-              required
-            />
-            <input 
-              type="time" 
-              value={newTime}
-              onChange={(e) => setNewTime(e.target.value)}
-              className="w-full px-3 py-2 text-sm rounded-lg border border-slate-200"
-              required
-            />
+          <div className="flex items-center gap-2 mb-2">
+            <i className="fa-solid fa-calendar-plus text-amber-500"></i>
+            <h4 className="text-sm font-black text-slate-700 uppercase tracking-widest">Ders Tarihini Güncelle</h4>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1">
+              <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Yeni Tarih</label>
+              <input 
+                type="date" 
+                value={newDate}
+                onChange={(e) => setNewDate(e.target.value)}
+                className="w-full px-4 py-3 text-sm rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500 outline-none"
+                required
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Yeni Saat</label>
+              <input 
+                type="time" 
+                value={newTime}
+                onChange={(e) => setNewTime(e.target.value)}
+                className="w-full px-4 py-3 text-sm rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500 outline-none"
+                required
+              />
+            </div>
           </div>
           <div className="flex gap-2">
             <button 
               type="submit"
-              className="flex-1 bg-emerald-600 text-white text-xs py-2 rounded-lg font-bold"
+              className="flex-1 bg-emerald-600 text-white text-xs py-3 rounded-xl font-black shadow-md shadow-emerald-100"
             >
-              Güncelle
+              DEĞİŞİKLİKLERİ KAYDET
             </button>
             <button 
               type="button"
               onClick={() => setIsRescheduling(false)}
-              className="flex-1 bg-slate-100 text-slate-600 text-xs py-2 rounded-lg"
+              className="flex-1 bg-slate-100 text-slate-600 text-xs py-3 rounded-xl font-bold"
             >
-              İptal
+              VAZGEÇ
             </button>
           </div>
         </form>
