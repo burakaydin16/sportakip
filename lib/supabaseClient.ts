@@ -15,7 +15,7 @@ const getEnv = (key: string): string => {
 
 // Varsayılan değerleri veya ortam değişkenlerini al
 const supabaseUrl = getEnv('SUPABASE_URL') || 'https://acstgywaqtodilbtfomr.supabase.co';
-const supabaseAnonKey = getEnv('SUPABASE_ANON_KEY') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFjc3RneXdhcXRvZGlsYnRmb21yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYxMzA3NDMsImV4cCI6MjA4MTcwNjc0M30.YzYYFkIWZg4Bjy8yA3oNlHl6aEjKzsKsZiVQg5dCUeE';
+const supabaseAnonKey = getEnv('SUPABASE_ANON_KEY') || 'sb_publishable_Lxdq6q3IBnsTi_v_Qib8Aw_10NGF-Ir';
 
 // Yapılandırma geçerlilik kontrolü
 export const isSupabaseConfigured = Boolean(
