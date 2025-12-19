@@ -2,15 +2,19 @@
 import { createClient } from '@supabase/supabase-js';
 
 /**
- * 1. ADIM: AŞAĞIDAKİ DEĞERLERİ DEĞİŞTİRİN
- * Supabase Panel -> Settings -> API kısmından alın.
+ * 🛠 SUPABASE BAĞLANTI AYARLARI
+ * 
+ * 1. Supabase panelinize gidin (app.supabase.com)
+ * 2. Settings (⚙️) -> API sekmesine tıklayın.
+ * 3. 'Project URL' ve 'anon public' key değerlerini kopyalayın.
+ * 4. Aşağıdaki tırnak içindeki alanlara yapıştırın.
  */
 const SUPABASE_URL = 'https://acstgywaqtodilbtfomr.supabase.co'; 
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFjc3RneXdhcXRvZGlsYnRmb21yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYxMzA3NDMsImV4cCI6MjA4MTcwNjc0M30.YzYYFkIWZg4Bjy8yA3oNlHl6aEjKzsKsZiVQg5dCUeE';
 
 /**
- * 2. ADIM: Netlify ortam değişkenlerini güvenli kontrol etme
- * (Tarayıcıda çökme yaşamamak için 'typeof' kontrolü şarttır)
+ * Ortam değişkenlerini kontrol eden yardımcı fonksiyon.
+ * Netlify üzerinde çalışırken bu değerler otomatik olarak okunur.
  */
 const getSafeEnv = (key: string): string => {
   try {
@@ -33,7 +37,7 @@ const getSafeEnv = (key: string): string => {
 const finalUrl = getSafeEnv('SUPABASE_URL') || SUPABASE_URL;
 const finalKey = getSafeEnv('SUPABASE_ANON_KEY') || SUPABASE_ANON_KEY;
 
-// Değerlerin geçerliliğini kontrol et
+// Yapılandırma kontrolü
 export const isSupabaseConfigured = Boolean(
   finalUrl && 
   finalUrl.startsWith('https://') && 
@@ -41,11 +45,11 @@ export const isSupabaseConfigured = Boolean(
   finalKey.length > 20
 );
 
-// İstemciyi başlat (Eğer bilgiler yoksa null döner, App.tsx bunu yakalar)
+// Supabase istemcisini oluştur
 export const supabase = isSupabaseConfigured 
   ? createClient(finalUrl, finalKey) 
   : null;
 
 if (!isSupabaseConfigured) {
-  console.error("PilaTrack: Supabase bağlantı bilgileri eksik! Uygulama beklemeye alındı.");
+  console.error("PilaTrack: Supabase URL veya Key bulunamadı. Lütfen lib/supabaseClient.ts dosyasını düzenleyin.");
 }
