@@ -6,20 +6,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PilaTrack - Pilates Takibi</title>
   
-  <!-- Tailwind Play CDN - CORS hatasını önlemek için crossorigin kaldırıldı -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- 
+    Tailwind Play CDN - Sürüm sabitlendi (3.4.1) 
+    CORS hatalarını önlemek için yönlendirmesiz doğrudan sürüm kullanıyoruz.
+    Not: Konsoldaki 'should not be used in production' uyarısı normaldir ve çalışmaya engel değildir.
+  -->
+  <script src="https://cdn.tailwindcss.com/3.4.1"></script>
+  
+  <script>
+    // Tailwind konfigürasyonunu burada tanımlamak JIT motorunun daha kararlı çalışmasını sağlar
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
   
-  <style>
-    body { 
-      font-family: 'Inter', sans-serif; 
-      margin: 0;
-      padding: 0;
-      background-color: #f8fafc; /* slate-50 */
+  <style type="text/tailwindcss">
+    @layer base {
+      body { 
+        @apply bg-slate-50 text-slate-900;
+        margin: 0;
+        padding: 0;
+      }
     }
-    /* JavaScript yüklenene kadar gösterilecek basit loader */
+    
+    /* Yükleme animasyonu */
     #root:empty {
       display: flex;
       align-items: center;
